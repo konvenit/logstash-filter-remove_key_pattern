@@ -8,13 +8,13 @@ require "logstash/json"
 #
 # For example, if you have a parent named 'haystack', and you want to
 # remove all his children that contains a digit(\d) or 'needle', do this:
-#
-# filter {
-#    remove_key_pattern{
-#     parent => "haystack",
-#     pattern => ["\\d", "needle"]
+# [source, ruby]
+#   filter {
+#     remove_key_pattern{
+#       parent => "haystack",
+#       pattern => ["\\d", "needle"]
+#     }
 #   }
-# }
 #
 class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
 
