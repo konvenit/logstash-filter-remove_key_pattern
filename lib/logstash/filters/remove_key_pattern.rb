@@ -10,7 +10,7 @@ require "logstash/json"
 # remove all his children that contains a digit(\d) or 'needle', do this:
 # [source, ruby]
 #   filter {
-#     remove_key_pattern{
+#     remove_key_pattern {
 #       parent => "haystack",
 #       pattern => ["\\d", "needle"]
 #     }
@@ -39,7 +39,6 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
   public
   def filter(event)
     remove_pattern(event)
-
     filter_matched(event)
   end
 
