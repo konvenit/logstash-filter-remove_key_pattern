@@ -15,7 +15,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     CONFIG
 
     hash = {
-      "hello" => { "whoa" => [ 1, 2, 3, 4 ] },
+      "hello" => { "numbers" => [ 1, 2, 3, 4 ] },
       "haystack" => {
         "key1_id" => ["value1", "value2", "value3"],
         "id" => ["value1", "value2", "value3"],
@@ -26,6 +26,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     }
 
     sample(hash) do
+      insist { subject.get("hello") }.include?("numbers")
       insist { subject.get("haystack") }.include?("id")
       insist { subject.get("haystack") }.include?("key_four_id")
       reject { subject.get("haystack") }.include?("key4_id")
