@@ -1,11 +1,12 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-remove_key_pattern'
   s.version       = '0.1.0'
-  s.licenses      = ['Apache License (2.0)']
+  s.licenses      = ['Apache-2.0']
   s.summary       = 'Remove all keys that match pattern'
   s.authors       = ['Arthur Alfredo']
   s.email         = 'a.alfredo@miceportal.com'
   s.require_paths = ['lib']
+  s.homepage      = 'http://github.com/miceportal/logstash_filter_remove_key_pattern'
 
   # Files
   s.files = Dir['lib/**/*','spec/**/*','vendor/**/*','*.gemspec','*.md','Gemfile','LICENSE']
@@ -17,5 +18,5 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", ">= 1.60", "<= 2.99"
-  s.add_development_dependency 'logstash-devutils'
+  s.add_development_dependency 'logstash-devutils', "~> 1.3", ">= 1.3.0"
 end
