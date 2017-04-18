@@ -42,6 +42,7 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
 
   public
   def filter(event)
+    File.open('/tmp/logstash_events.txt', 'w+') { |file| file << event }
     @parent_keys.each do |key|
       remove_pattern(event, key) unless event.get(key).nil?
     end
