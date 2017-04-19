@@ -61,7 +61,6 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
         end
       end
     end
-    event.set("#{key}_json", LogStash::Json.dump(event.get(key)))
     event.set(key, hash)
   end
 end

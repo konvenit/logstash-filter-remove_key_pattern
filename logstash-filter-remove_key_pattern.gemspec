@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors       = ['Arthur Alfredo']
   s.email         = 'a.alfredo@miceportal.com'
   s.require_paths = ['lib']
-  s.homepage      = 'http://github.com/miceportal/logstash_filter_remove_key_pattern'
+  s.homepage      = 'https://github.com/konvenit/logstash-filter-remove_key_pattern'
 
   # Files
   s.files = Dir['lib/**/*','spec/**/*','vendor/**/*','*.gemspec','*.md','Gemfile','LICENSE']
