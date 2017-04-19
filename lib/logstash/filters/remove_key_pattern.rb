@@ -11,7 +11,7 @@ require "logstash/json"
 # [source, ruby]
 #   filter {
 #     remove_key_pattern {
-#       parent_keys => ["haystack1", "haystack2"]
+#       parent_key => "haystack1"
 #       pattern => ["\\d", "needle"]
 #       keep_only_ids => "true"
 #     }
@@ -22,7 +22,7 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
   config_name "remove_key_pattern"
 
   # Array of parent keys to remove from
-  config :parent_keys, :validate => :array, :required => true
+  config :parent_key, :validate => :string, :required => true
 
   # Array of patterns to remove
   config :pattern, :validate => :array, :required => true
@@ -42,16 +42,14 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
 
   public
   def filter(event)
-    @parent_keys.each do |key|
-      remove_pattern(event, key) unless event.get(key).nil?
-    end
+    remove_pattern(event) unless event.get(@parent_key).nil?
     filter_matched(event)
   end
 
   private
-  def remove_pattern(event, key)
+  def remove_pattern(event)
     hash = {}
-    event.get(key).each do |k, v|
+    event.get(@parent_key).each do |k, v|
       unless (k =~ @pattern)
         if @keep_only_ids && (k == 'id' or k =~ /.*_id$/)
           hash[k] = v
@@ -60,10 +58,6 @@ class LogStash::Filters::RemoveKeyPattern < LogStash::Filters::Base
         end
       end
     end
-    begin
-      event.set(key, hash)
-    rescue LogStash::Json::GeneratorError
-      return
-    end
+    event.set(@parent_key, hash)
   end
 end

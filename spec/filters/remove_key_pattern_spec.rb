@@ -8,7 +8,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_keys => ["haystack2", "haystack"]
+          parent_key => "haystack2"
           pattern => ["needle", "\\d"]
           keep_only_ids => "true"
         }
@@ -37,10 +37,6 @@ describe LogStash::Filters::RemoveKeyPattern do
     }
 
     sample(hash) do
-      insist { subject.get("hello") }.include?("numbers")
-      insist { subject.get("haystack") }.include?("id")
-      insist { subject.get("haystack") }.include?("key_four_id")
-      reject { subject.get("haystack") }.include?("key4_id")
       reject { subject.get("haystack2") }.include?("needle")
       insist { subject.get("haystack2") }.include?("key_one_id")
       reject { subject.get("haystack2") }.include?("key4_id")
@@ -53,7 +49,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_keys => ["haystack2", "haystack"]
+          parent_key => "haystack"
           pattern => ["needle", "\\d"]
           keep_only_ids => "false"
         }
@@ -82,15 +78,9 @@ describe LogStash::Filters::RemoveKeyPattern do
     }
 
     sample(hash) do
-      insist { subject.get("hello") }.include?("numbers")
       insist { subject.get("haystack") }.include?("id")
       insist { subject.get("haystack") }.include?("key_four_id")
       reject { subject.get("haystack") }.include?("key4_id")
-      reject { subject.get("haystack2") }.include?("needle")
-      insist { subject.get("haystack2") }.include?("key_one_id")
-      reject { subject.get("haystack2") }.include?("key4_id")
-      insist { subject.get("haystack2") }.include?("key")
-      insist { subject.get("haystack2") }.include?("foobar")
     end
   end
 
@@ -98,7 +88,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_keys => ["h2", "h1"]
+          parent_key => "h2"
           pattern => ["needle", "\\d"]
           keep_only_ids => "true"
         }
