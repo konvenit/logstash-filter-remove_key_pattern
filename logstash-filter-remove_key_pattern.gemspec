@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-remove_key_pattern'
-  s.version       = '0.1.4'
+  s.version       = '0.2.0'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'Remove all keys that match pattern'
   s.authors       = ['Arthur Alfredo']

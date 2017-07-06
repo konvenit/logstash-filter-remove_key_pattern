@@ -8,7 +8,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_key => "haystack2"
+          parent_keys => ["haystack1", "haystack2"]
           pattern => ["needle", "\\d"]
           keep_only_ids => "true"
         }
@@ -20,7 +20,7 @@ describe LogStash::Filters::RemoveKeyPattern do
         "numbers" => ["one", "two", "three"],
         "47" => ["2", "3", "7"],
       },
-      "haystack" => {
+      "haystack1" => {
         "key1_id" => ["value1", "value2", "value3"],
         "id" => ["value1", "value2", "value3"],
         "key4_id" => ["value1", "value2", "value3"],
@@ -37,6 +37,10 @@ describe LogStash::Filters::RemoveKeyPattern do
     }
 
     sample(hash) do
+      insist { subject.get("hello") }.include?("numbers")
+      insist { subject.get("haystack1") }.include?("id")
+      insist { subject.get("haystack1") }.include?("key_four_id")
+      reject { subject.get("haystack1") }.include?("key4_id")
       reject { subject.get("haystack2") }.include?("needle")
       insist { subject.get("haystack2") }.include?("key_one_id")
       reject { subject.get("haystack2") }.include?("key4_id")
@@ -49,7 +53,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_key => "haystack"
+          parent_keys => ["haystack", "haystack2"]
           pattern => ["needle", "\\d"]
           keep_only_ids => "false"
         }
@@ -81,6 +85,11 @@ describe LogStash::Filters::RemoveKeyPattern do
       insist { subject.get("haystack") }.include?("id")
       insist { subject.get("haystack") }.include?("key_four_id")
       reject { subject.get("haystack") }.include?("key4_id")
+      reject { subject.get("haystack2") }.include?("needle")
+      insist { subject.get("haystack2") }.include?("key_one_id")
+      reject { subject.get("haystack2") }.include?("key4_id")
+      insist { subject.get("haystack2") }.include?("key")
+      insist { subject.get("haystack2") }.include?("foobar")
     end
   end
 
@@ -88,7 +97,7 @@ describe LogStash::Filters::RemoveKeyPattern do
     config <<-CONFIG
       filter {
         remove_key_pattern {
-          parent_key => "h2"
+          parent_keys => ["h2"]
           pattern => ["needle", "\\d"]
           keep_only_ids => "true"
         }
